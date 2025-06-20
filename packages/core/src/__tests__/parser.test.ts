@@ -67,4 +67,129 @@ Some content here.`;
       message: 'Missing required field: id'
     });
   });
+
+  test('should parse @template directives', () => {
+    const content = `id: test
+title: Test Story
+---
+
+This is a section with a template directive.
+
+@template: comic_panel_4
+
+Some more text here.`;
+
+    const result = parseStory(content);
+    
+    expect(result.sections[0].directives).toContainEqual({
+      type: 'template',
+      template: 'comic_panel_4'
+    });
+    expect(result.sections[0].text).not.toContain('@template:');
+  });
+
+  test('should parse @justify directives', () => {
+    const content = `id: test
+title: Test Story
+---
+
+This text should be centered.
+
+@justify: center
+
+More content here.`;
+
+    const result = parseStory(content);
+    
+    expect(result.sections[0].directives).toContainEqual({
+      type: 'justify',
+      alignment: 'center'
+    });
+    expect(result.sections[0].text).not.toContain('@justify:');
+  });
+
+  test('should parse @delay directives', () => {
+    const content = `id: test
+title: Test Story
+---
+
+Wait a moment before showing this.
+
+@delay: 2.5s
+
+---
+
+Also test milliseconds.
+
+@delay: 500ms`;
+
+    const result = parseStory(content);
+    
+    expect(result.sections[0].directives).toContainEqual({
+      type: 'delay',
+      duration: 2500,
+      unit: 's'
+    });
+    expect(result.sections[1].directives).toContainEqual({
+      type: 'delay',
+      duration: 500,
+      unit: 'ms'
+    });
+  });
+
+  test('should parse @fade directives', () => {
+    const content = `id: test
+title: Test Story
+---
+
+This should fade in slowly.
+
+@fade: slow
+
+---
+
+This should fade out.
+
+@fade: out`;
+
+    const result = parseStory(content);
+    
+    expect(result.sections[0].directives).toContainEqual({
+      type: 'fade',
+      effect: 'slow'
+    });
+    expect(result.sections[1].directives).toContainEqual({
+      type: 'fade',
+      effect: 'out'
+    });
+  });
+
+  test('should parse multiple directives in one section', () => {
+    const content = `id: test
+title: Test Story
+---
+
+This section has multiple directives.
+
+@template: photo_essay
+@justify: center
+@delay: 1s
+@fade: in
+@image: test.jpg "A test image"
+
+All directives should be parsed.`;
+
+    const result = parseStory(content);
+    
+    expect(result.sections[0].directives).toHaveLength(5);
+    expect(result.sections[0].directives).toEqual(
+      expect.arrayContaining([
+        { type: 'template', template: 'photo_essay' },
+        { type: 'justify', alignment: 'center' },
+        { type: 'delay', duration: 1000, unit: 's' },
+        { type: 'fade', effect: 'in' },
+        { type: 'image', src: 'test.jpg', caption: 'A test image' }
+      ])
+    );
+  });
 });
