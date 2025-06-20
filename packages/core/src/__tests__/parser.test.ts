@@ -41,8 +41,9 @@ describe('YAML Frontmatter Parser', () => {
 
     expect(sectionWithImage?.directives).toContainEqual({
       type: 'image',
-      src: 'reykjavik_morning.jpg',
-      caption: 'Perfect morning light over colorful Reykjavik rooftops'
+      value: 'reykjavik_morning.jpg',
+      params: ['Perfect morning light over colorful Reykjavik rooftops'],
+      raw: '@image: reykjavik_morning.jpg "Perfect morning light over colorful Reykjavik rooftops"'
     });
   });
 
@@ -83,7 +84,8 @@ Some more text here.`;
     
     expect(result.sections[0].directives).toContainEqual({
       type: 'template',
-      template: 'comic_panel_4'
+      value: 'comic_panel_4',
+      raw: '@template: comic_panel_4'
     });
     expect(result.sections[0].text).not.toContain('@template:');
   });
@@ -103,7 +105,8 @@ More content here.`;
     
     expect(result.sections[0].directives).toContainEqual({
       type: 'justify',
-      alignment: 'center'
+      value: 'center',
+      raw: '@justify: center'
     });
     expect(result.sections[0].text).not.toContain('@justify:');
   });
@@ -127,13 +130,13 @@ Also test milliseconds.
     
     expect(result.sections[0].directives).toContainEqual({
       type: 'delay',
-      duration: 2500,
-      unit: 's'
+      value: '2.5s',
+      raw: '@delay: 2.5s'
     });
     expect(result.sections[1].directives).toContainEqual({
       type: 'delay',
-      duration: 500,
-      unit: 'ms'
+      value: '500ms',
+      raw: '@delay: 500ms'
     });
   });
 
@@ -156,11 +159,13 @@ This should fade out.
     
     expect(result.sections[0].directives).toContainEqual({
       type: 'fade',
-      effect: 'slow'
+      value: 'slow',
+      raw: '@fade: slow'
     });
     expect(result.sections[1].directives).toContainEqual({
       type: 'fade',
-      effect: 'out'
+      value: 'out',
+      raw: '@fade: out'
     });
   });
 
@@ -184,11 +189,11 @@ All directives should be parsed.`;
     expect(result.sections[0].directives).toHaveLength(5);
     expect(result.sections[0].directives).toEqual(
       expect.arrayContaining([
-        { type: 'template', template: 'photo_essay' },
-        { type: 'justify', alignment: 'center' },
-        { type: 'delay', duration: 1000, unit: 's' },
-        { type: 'fade', effect: 'in' },
-        { type: 'image', src: 'test.jpg', caption: 'A test image' }
+        { type: 'template', value: 'photo_essay', raw: '@template: photo_essay' },
+        { type: 'justify', value: 'center', raw: '@justify: center' },
+        { type: 'delay', value: '1s', raw: '@delay: 1s' },
+        { type: 'fade', value: 'in', raw: '@fade: in' },
+        { type: 'image', value: 'test.jpg', params: ['A test image'], raw: '@image: test.jpg "A test image"' }
       ])
     );
   });

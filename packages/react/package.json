@@ -1,18 +1,28 @@
 {
-  "name": "react",
+  "name": "@storymark/react",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "React components for Storymark stories",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "rollup -c",
+    "test": "jest"
   },
-  "keywords": [],
+  "keywords": ["storymark", "react", "storytelling"],
   "author": "",
   "license": "ISC",
+  "peerDependencies": {
+    "react": ">=18.0.0",
+    "react-dom": ">=18.0.0"
+  },
+  "dependencies": {},
   "devDependencies": {
     "@types/react": "^19.1.8",
     "@types/react-dom": "^19.1.6",
+    "@testing-library/react": "^15.0.0",
+    "@testing-library/jest-dom": "^6.5.0",
     "jest-environment-jsdom": "^30.0.2",
-    "react": "^1.0.0"
+    "react": "^19.1.8",
+    "react-dom": "^19.1.8"
   }
 }

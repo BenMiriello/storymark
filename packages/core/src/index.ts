@@ -8,19 +8,10 @@ export interface StoryMetadata {
 }
 
 export interface StoryDirective {
-  type: 'image' | 'template' | 'justify' | 'delay' | 'fade';
-  // Image directive props
-  src?: string;
-  caption?: string;
-  // Template directive props
-  template?: string;
-  // Justify directive props
-  alignment?: 'left' | 'center' | 'right' | 'justify';
-  // Delay directive props
-  duration?: number; // in milliseconds
-  unit?: 's' | 'ms';
-  // Fade directive props
-  effect?: 'in' | 'out' | 'slow' | 'fast';
+  type: string;
+  value: string;
+  params?: string[];
+  raw: string;
 }
 
 export interface StorySection {
@@ -90,62 +81,39 @@ export function parseStory(content: string): ParsedStory {
   const sections: StorySection[] = sectionTexts.map(sectionText => {
     const directives: StoryDirective[] = [];
 
-    // Parse @image directives
-    const imageMatches = sectionText.matchAll(/@image:\s*([^\s]+)(?:\s+"([^"]*)")?/g);
-    for (const match of imageMatches) {
-      directives.push({
-        type: 'image',
-        src: match[1],
-        caption: match[2] || ''
-      });
-    }
-    
-    // Parse @template directives
-    const templateMatches = sectionText.matchAll(/@template:\s*(\w+)/g);
-    for (const match of templateMatches) {
-      directives.push({
-        type: 'template',
-        template: match[1]
-      });
-    }
-    
-    // Parse @justify directives
-    const justifyMatches = sectionText.matchAll(/@justify:\s*(left|center|right|justify)/g);
-    for (const match of justifyMatches) {
-      directives.push({
-        type: 'justify',
-        alignment: match[1] as 'left' | 'center' | 'right' | 'justify'
-      });
-    }
-    
-    // Parse @delay directives
-    const delayMatches = sectionText.matchAll(/@delay:\s*(\d+(?:\.\d+)?)(s|ms)?/g);
-    for (const match of delayMatches) {
-      const value = parseFloat(match[1]);
-      const unit = (match[2] || 's') as 's' | 'ms';
-      directives.push({
-        type: 'delay',
-        duration: unit === 'ms' ? value : value * 1000, // Convert to milliseconds
-        unit
-      });
-    }
-    
-    // Parse @fade directives
-    const fadeMatches = sectionText.matchAll(/@fade:\s*(in|out|slow|fast)/g);
-    for (const match of fadeMatches) {
-      directives.push({
-        type: 'fade',
-        effect: match[1] as 'in' | 'out' | 'slow' | 'fast'
-      });
+    // Parse all @directive patterns generically
+    const directiveMatches = sectionText.matchAll(/@(\w+):\s*([^\r\n]+)/g);
+    for (const match of directiveMatches) {
+      const type = match[1];
+      const fullValue = match[2].trim();
+      const raw = match[0];
+      
+      // Special handling for image directives with quoted captions
+      if (type === 'image') {
+        const imageMatch = fullValue.match(/^([^\s]+)(?:\s+"([^"]*)")?$/);
+        if (imageMatch) {
+          directives.push({
+            type: 'image',
+            value: imageMatch[1],
+            params: imageMatch[2] ? [imageMatch[2]] : undefined,
+            raw
+          });
+        }
+      } else {
+        // Generic directive parsing
+        const parts = fullValue.split(/\s+/);
+        directives.push({
+          type,
+          value: parts[0],
+          params: parts.length > 1 ? parts.slice(1) : undefined,
+          raw
+        });
+      }
     }
 
-    // Remove directive lines from text
+    // Remove all directive lines from text
     const cleanText = sectionText
-      .replace(/@image:.*$/gm, '')
-      .replace(/@template:.*$/gm, '')
-      .replace(/@justify:.*$/gm, '')
-      .replace(/@delay:.*$/gm, '')
-      .replace(/@fade:.*$/gm, '')
+      .replace(/@\w+:.*$/gm, '')
       .trim();
 
     return {
