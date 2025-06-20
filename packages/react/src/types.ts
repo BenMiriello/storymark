@@ -1,4 +1,4 @@
-import type { ParsedStory, StorySection, StoryDirective } from '../../core/src/index';
+import type { ParsedStory, StorySection, StoryDirective } from '@storymark/core';
 
 export interface StorymarkRendererProps {
   content: string;

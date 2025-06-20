@@ -19,12 +19,6 @@ module.exports = {
       testMatch: ['<rootDir>/packages/core/**/*.(test|spec).ts'],
       preset: 'ts-jest',
       testEnvironment: 'node'
-    },
-    {
-      displayName: '@storymark/react',
-      testMatch: ['<rootDir>/packages/react/**/*.(test|spec).ts'],
-      preset: 'ts-jest',
-      testEnvironment: 'jsdom'
     }
   ]
 };

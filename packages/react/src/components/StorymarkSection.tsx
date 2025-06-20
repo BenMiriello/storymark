@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import type { StoryDirective } from '../../../core/src/index';
+import type { StoryDirective } from '@storymark/core';
 import type { StorymarkSectionProps } from '../types';
 
 export function StorymarkSection({ section, index, className = '' }: StorymarkSectionProps) {
