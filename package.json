@@ -43,6 +43,7 @@
     "eslint-plugin-prettier": "^5.5.0",
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-hooks": "^5.2.0",
+    "fs": "^0.0.1-security",
     "husky": "^9.1.7",
     "jest": "^30.0.2",
     "lint-staged": "^16.1.2",

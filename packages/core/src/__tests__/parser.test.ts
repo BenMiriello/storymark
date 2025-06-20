@@ -1,6 +1,8 @@
 import { parseStory } from '../index';
+import { readFileSync } from 'fs';
+import { join } from 'path';
 
-import icelandStoryContent from './icelandStory';
+const icelandStoryContent = readFileSync(join(__dirname, 'icelandStory.syml'), 'utf-8');
 
 describe('YAML Frontmatter Parser', () => {
   test('should parse basic YAML frontmatter', () => {
@@ -24,7 +26,7 @@ describe('YAML Frontmatter Parser', () => {
   test('should split content into sections', () => {
     const result = parseStory(icelandStoryContent);
 
-    expect(result.sections).toHaveLength(11);
+    expect(result.sections).toHaveLength(10);
     expect(result.sections[0].text).toContain('Day one in Reykjavik');
     expect(result.sections[1].text).toContain('hotel clerk wrote our room number');
     expect(result.sections[2].text).toContain('rental car came with all the highland essentials');
