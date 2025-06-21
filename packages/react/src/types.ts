@@ -1,4 +1,10 @@
-import type { StorySection, StoryDirective } from '@storymark/core';
+import type {
+  StorySection,
+  StoryDirective,
+  ParsedStory,
+  StoryMetadata,
+} from '@storymark/core';
+import type { ReactNode } from 'react';
 
 export interface StorymarkRendererProps {
   content: string;
@@ -11,7 +17,36 @@ export interface StorymarkSectionProps {
   className?: string;
 }
 
-/* eslint-disable no-unused-vars */
+// New Context and Provider types
+export interface StorymarkProviderProps {
+  story: ParsedStory;
+  children: ReactNode;
+  templateProps?: Record<string, any>;
+}
+
+export interface StorymarkContextValue {
+  story: ParsedStory;
+  sections: StorySection[];
+  metadata: StoryMetadata;
+  storyProp: (_name: string, _options?: StoryPropOptions) => any;
+}
+
+export interface StoryPropOptions {
+  default?: any;
+  options?: any[];
+  max?: number;
+  min?: number;
+  required?: boolean;
+  type?: 'string' | 'number' | 'boolean' | 'array';
+}
+
+// HOC props for class components
+export interface WithStoryProps {
+  sections: StorySection[];
+  metadata: StoryMetadata;
+  storyProp: (_name: string, _options?: StoryPropOptions) => any;
+}
+
 export interface DirectiveHandlers {
   image?: (directive: StoryDirective) => React.ReactNode;
   template?: (directive: StoryDirective) => React.ReactNode;
@@ -20,4 +55,3 @@ export interface DirectiveHandlers {
   fade?: (directive: StoryDirective) => string; // Returns CSS class
   [key: string]: any;
 }
-/* eslint-enable no-unused-vars */

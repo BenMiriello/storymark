@@ -8,7 +8,11 @@
     "build": "rollup -c",
     "test": "jest"
   },
-  "keywords": ["storymark", "react", "storytelling"],
+  "keywords": [
+    "storymark",
+    "react",
+    "storytelling"
+  ],
   "author": "",
   "license": "ISC",
   "peerDependencies": {
@@ -19,12 +23,12 @@
     "@storymark/core": "1.0.0"
   },
   "devDependencies": {
-    "@types/react": "^19.1.8",
-    "@types/react-dom": "^19.1.6",
+    "@types/react": "^18.3.0",
+    "@types/react-dom": "^18.3.0",
     "@testing-library/react": "^15.0.0",
     "@testing-library/jest-dom": "^6.5.0",
     "jest-environment-jsdom": "^30.0.2",
-    "react": "^19.1.8",
-    "react-dom": "^19.1.8"
+    "react": "^18.3.0",
+    "react-dom": "^18.3.0"
   }
 }

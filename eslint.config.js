@@ -37,6 +37,8 @@ module.exports = [
         jest: 'readonly',
         // React globals for React components
         React: 'readonly',
+        // Console for logging and testing
+        console: 'readonly',
       },
     },
     plugins: {
@@ -52,9 +54,10 @@ module.exports = [
     },
     rules: {
       'prettier/prettier': 'error',
+      'no-unused-vars': 'off',
       '@typescript-eslint/no-unused-vars': [
         'error',
-        { argsIgnorePattern: '^_|^directive$' },
+        { argsIgnorePattern: '^_|^directive$', varsIgnorePattern: '^_' },
       ],
       '@typescript-eslint/explicit-function-return-type': 'off',
       '@typescript-eslint/explicit-module-boundary-types': 'off',
