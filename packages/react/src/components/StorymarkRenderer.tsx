@@ -1,9 +1,12 @@
-import { useMemo } from 'react';
+import React from 'react';
 import { useStorymark } from '../hooks/useStorymark';
 import { StorymarkSection } from './StorymarkSection';
 import type { StorymarkRendererProps } from '../types';
 
-export function StorymarkRenderer({ content, className = '' }: StorymarkRendererProps) {
+export function StorymarkRenderer({
+  content,
+  className = '',
+}: StorymarkRendererProps) {
   const story = useStorymark(content);
 
   const hasErrors = story.errors.length > 0;
@@ -33,7 +36,7 @@ export function StorymarkRenderer({ content, className = '' }: StorymarkRenderer
           <span className="storymark-category">{story.metadata.category}</span>
         )}
       </header>
-      
+
       <main className="storymark-content">
         {story.sections.map((section, index) => (
           <StorymarkSection

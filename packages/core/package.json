@@ -1,14 +1,18 @@
 {
   "name": "@storymark/core",
   "version": "1.0.0",
-  "description": "Framework-agnostic story parser for Storymark",
+  "description": "Framework-agnostic text parser for Storymark",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "rollup -c",
     "test": "jest"
   },
-  "keywords": ["storymark", "parser", "storytelling"],
+  "keywords": [
+    "storymark",
+    "parser",
+    "storytelling"
+  ],
   "author": "",
   "license": "ISC",
   "dependencies": {

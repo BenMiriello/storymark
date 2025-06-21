@@ -26,7 +26,9 @@ This is the second section.
     expect(screen.getByText('adventure')).toBeInTheDocument();
 
     // Check sections content
-    expect(screen.getByText('This is the first section of our story.')).toBeInTheDocument();
+    expect(
+      screen.getByText('This is the first section of our story.')
+    ).toBeInTheDocument();
     expect(screen.getByText('This is the second section.')).toBeInTheDocument();
 
     // Check image rendering
@@ -54,7 +56,10 @@ Content.`;
       <StorymarkRenderer content={content} className="custom-class" />
     );
 
-    expect(container.firstChild).toHaveClass('storymark-renderer', 'custom-class');
+    expect(container.firstChild).toHaveClass(
+      'storymark-renderer',
+      'custom-class'
+    );
   });
 
   test('should handle empty sections gracefully', () => {
@@ -75,7 +80,9 @@ Another section after empty one.`;
     render(<StorymarkRenderer content={content} />);
 
     expect(screen.getByText('Just text, no directives.')).toBeInTheDocument();
-    expect(screen.getByText('Another section after empty one.')).toBeInTheDocument();
+    expect(
+      screen.getByText('Another section after empty one.')
+    ).toBeInTheDocument();
   });
 
   test('should render multiple images in one section', () => {

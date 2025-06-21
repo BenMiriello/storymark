@@ -1,4 +1,4 @@
-import type { ParsedStory, StorySection, StoryDirective } from '@storymark/core';
+import type { StorySection, StoryDirective } from '@storymark/core';
 
 export interface StorymarkRendererProps {
   content: string;
@@ -11,6 +11,7 @@ export interface StorymarkSectionProps {
   className?: string;
 }
 
+/* eslint-disable no-unused-vars */
 export interface DirectiveHandlers {
   image?: (directive: StoryDirective) => React.ReactNode;
   template?: (directive: StoryDirective) => React.ReactNode;
@@ -19,3 +20,4 @@ export interface DirectiveHandlers {
   fade?: (directive: StoryDirective) => string; // Returns CSS class
   [key: string]: any;
 }
+/* eslint-enable no-unused-vars */

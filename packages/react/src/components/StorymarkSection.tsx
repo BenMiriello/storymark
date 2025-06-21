@@ -2,19 +2,27 @@ import { useMemo } from 'react';
 import type { StoryDirective } from '@storymark/core';
 import type { StorymarkSectionProps } from '../types';
 
-export function StorymarkSection({ section, index, className = '' }: StorymarkSectionProps) {
+export function StorymarkSection({
+  section,
+  index,
+  className = '',
+}: StorymarkSectionProps) {
   // Process directives to extract styling and content modifications
   const processedDirectives = useMemo(() => {
     const styles: React.CSSProperties = {};
     const cssClasses: string[] = [];
     const imageDirectives: StoryDirective[] = [];
-    
-    section.directives.forEach((directive) => {
+
+    section.directives.forEach(directive => {
       switch (directive.type) {
         case 'justify':
-          styles.textAlign = directive.value as 'left' | 'center' | 'right' | 'justify';
+          styles.textAlign = directive.value as
+            | 'left'
+            | 'center'
+            | 'right'
+            | 'justify';
           break;
-        case 'delay':
+        case 'delay': {
           // Parse delay value (e.g., "2.5s" or "500ms")
           const match = directive.value.match(/^(\d+(?:\.\d+)?)(s|ms)?$/);
           if (match) {
@@ -24,6 +32,7 @@ export function StorymarkSection({ section, index, className = '' }: StorymarkSe
             styles.animationDelay = `${delayMs}ms`;
           }
           break;
+        }
         case 'fade':
           cssClasses.push(`fade-${directive.value}`);
           break;
@@ -35,7 +44,7 @@ export function StorymarkSection({ section, index, className = '' }: StorymarkSe
           break;
       }
     });
-    
+
     return { styles, cssClasses, imageDirectives };
   }, [section.directives]);
 
@@ -43,8 +52,10 @@ export function StorymarkSection({ section, index, className = '' }: StorymarkSe
     'storymark-section',
     `section-${index}`,
     ...processedDirectives.cssClasses,
-    className
-  ].filter(Boolean).join(' ');
+    className,
+  ]
+    .filter(Boolean)
+    .join(' ');
 
   return (
     <section className={sectionClasses} style={processedDirectives.styles}>
@@ -53,11 +64,11 @@ export function StorymarkSection({ section, index, className = '' }: StorymarkSe
           <p>{section.text}</p>
         </div>
       )}
-      
+
       {processedDirectives.imageDirectives.map((imageDirective, imgIndex) => (
         <div key={imgIndex} className="section-image">
-          <img 
-            src={imageDirective.value} 
+          <img
+            src={imageDirective.value}
             alt={imageDirective.params?.[0] || ''}
             className="storymark-image"
           />
@@ -68,9 +79,12 @@ export function StorymarkSection({ section, index, className = '' }: StorymarkSe
           )}
         </div>
       ))}
-      
+
       {section.directives.length > 0 && (
-        <details className="section-debug" style={{ fontSize: '0.8em', opacity: 0.7 }}>
+        <details
+          className="section-debug"
+          style={{ fontSize: '0.8em', opacity: 0.7 }}
+        >
           <summary>Debug: Directives ({section.directives.length})</summary>
           <pre>{JSON.stringify(section.directives, null, 2)}</pre>
         </details>

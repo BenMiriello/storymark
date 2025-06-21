@@ -60,7 +60,7 @@ Content 1.`;
       ({ content }) => useStorymark(content),
       { initialProps: { content } }
     );
-    
+
     const firstResult = result.current;
     expect(firstResult.metadata.title).toBe('Test 1');
 
@@ -70,7 +70,7 @@ title: Test 2
 Content 2.`;
 
     rerender({ content });
-    
+
     const secondResult = result.current;
     expect(secondResult.metadata.title).toBe('Test 2');
     expect(firstResult).not.toBe(secondResult); // Different object reference

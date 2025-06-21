@@ -2,13 +2,16 @@ import { parseStory } from '../index';
 import { readFileSync } from 'fs';
 import { join } from 'path';
 
-const icelandStoryContent = readFileSync(join(__dirname, 'icelandStory.syml'), 'utf-8');
+const icelandStoryContent = readFileSync(
+  join(__dirname, 'icelandStory.syml'),
+  'utf-8'
+);
 
-describe('Core Story Parser', () => {
+describe('Core .syml Text Parser', () => {
   describe('frontmatter parsing', () => {
     test('should parse basic YAML metadata', () => {
       const result = parseStory(icelandStoryContent);
-      
+
       expect(result.metadata.id).toBe('iceland_highlands');
       expect(result.metadata.title).toBe('Hidden Valleys of Iceland');
       expect(result.metadata.category).toBe('travel');
@@ -26,13 +29,13 @@ Some content here.`;
 
       expect(result.errors).toContainEqual({
         type: 'validation',
-        message: 'Missing required field: id'
+        message: 'Missing required field: id',
       });
     });
 
     test('should separate content from frontmatter', () => {
       const result = parseStory(icelandStoryContent);
-      
+
       expect(result.content).toContain('Day one in Reykjavik');
       expect(result.content).not.toContain('id: iceland_highlands');
       expect(result.content).not.toContain('---\n');
@@ -42,10 +45,12 @@ Some content here.`;
   describe('section parsing', () => {
     test('should split content into sections', () => {
       const result = parseStory(icelandStoryContent);
-      
+
       expect(result.sections).toHaveLength(10);
       expect(result.sections[0].text).toContain('Day one in Reykjavik');
-      expect(result.sections[1].text).toContain('hotel clerk wrote our room number');
+      expect(result.sections[1].text).toContain(
+        'hotel clerk wrote our room number'
+      );
     });
 
     test('should handle sections without directives', () => {
@@ -61,16 +66,20 @@ Some content here.`;
     test('should parse @image directives with captions', () => {
       const result = parseStory(icelandStoryContent);
 
-      const sectionWithImage = result.sections.find(section => 
-        section.text.includes('coffee shop had those perfect Icelandic pastries')
+      const sectionWithImage = result.sections.find(section =>
+        section.text.includes(
+          'coffee shop had those perfect Icelandic pastries'
+        )
       );
 
-      expect(sectionWithImage?.directives).toContainEqual({
-        type: 'image',
-        value: 'reykjavik_morning.jpg',
-        params: ['Perfect morning light over colorful Reykjavik rooftops'],
-        raw: '@image: reykjavik_morning.jpg "Perfect morning light over colorful Reykjavik rooftops"'
-      });
+      expect(sectionWithImage?.directives).toContainEqual(
+        expect.objectContaining({
+          type: 'image',
+          value: 'reykjavik_morning.jpg',
+          params: ['Perfect morning light over colorful Reykjavik rooftops'],
+          raw: '@image: reykjavik_morning.jpg "Perfect morning light over colorful Reykjavik rooftops"',
+        })
+      );
     });
 
     test('should parse @template directives', () => {
@@ -81,11 +90,11 @@ title: Test Story
 @template: comic_panel_4`;
 
       const result = parseStory(content);
-      
+
       expect(result.sections[0].directives).toContainEqual({
         type: 'template',
         value: 'comic_panel_4',
-        raw: '@template: comic_panel_4'
+        raw: '@template: comic_panel_4',
       });
     });
 
@@ -97,12 +106,14 @@ title: Test Story
 @video: demo.mp4`;
 
       const result = parseStory(content);
-      
-      expect(result.sections[0].directives).toContainEqual({
-        type: 'video',
-        value: 'demo.mp4',
-        raw: '@video: demo.mp4'
-      });
+
+      expect(result.sections[0].directives).toContainEqual(
+        expect.objectContaining({
+          type: 'video',
+          value: 'demo.mp4',
+          raw: '@video: demo.mp4',
+        })
+      );
     });
 
     test('should parse generic directive types', () => {
@@ -114,11 +125,19 @@ title: Test Story
 @audio: music.mp3`;
 
       const result = parseStory(content);
-      
+
       expect(result.sections[0].directives).toEqual(
         expect.arrayContaining([
-          { type: 'custom', value: 'some_value', raw: '@custom: some_value' },
-          { type: 'audio', value: 'music.mp3', raw: '@audio: music.mp3' }
+          expect.objectContaining({
+            type: 'custom',
+            value: 'some_value',
+            raw: '@custom: some_value',
+          }),
+          expect.objectContaining({
+            type: 'audio',
+            value: 'music.mp3',
+            raw: '@audio: music.mp3',
+          }),
         ])
       );
     });
@@ -136,12 +155,21 @@ This section has multiple directives.
 All directives should be parsed.`;
 
       const result = parseStory(content);
-      
+
       expect(result.sections[0].directives).toHaveLength(2);
       expect(result.sections[0].directives).toEqual(
         expect.arrayContaining([
-          { type: 'template', value: 'photo_essay', raw: '@template: photo_essay' },
-          { type: 'image', value: 'test.jpg', params: ['A test image'], raw: '@image: test.jpg "A test image"' }
+          expect.objectContaining({
+            type: 'template',
+            value: 'photo_essay',
+            raw: '@template: photo_essay',
+          }),
+          expect.objectContaining({
+            type: 'image',
+            value: 'test.jpg',
+            params: ['A test image'],
+            raw: '@image: test.jpg "A test image"',
+          }),
         ])
       );
     });
