@@ -23,7 +23,9 @@ class ReactTemplateRegistry {
     this.components.set(templateName, component);
     this.registeredNames.add(templateName);
 
-    console.log(`Registered template: ${templateName}`);
+    if (process.env.NODE_ENV !== 'test') {
+      console.log(`Registered template: ${templateName}`);
+    }
   }
 
   getComponent(templateName: string): ComponentType<any> | undefined {
@@ -42,7 +44,9 @@ class ReactTemplateRegistry {
 
   private toSnakeCase(str: string): string {
     return str
-      .replace(/([A-Z])/g, '_$1')
+      .replace(/([a-z])([A-Z])/g, '$1_$2')
+      .replace(/([a-zA-Z])([0-9])/g, '$1_$2')
+      .replace(/([0-9])([A-Z])/g, '$1_$2')
       .toLowerCase()
       .replace(/^_/, '');
   }

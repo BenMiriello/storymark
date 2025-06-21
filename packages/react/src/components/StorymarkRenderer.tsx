@@ -1,7 +1,7 @@
-import React from 'react';
 import { useStorymark } from '../hooks/useStorymark';
 import { StorymarkSection } from './StorymarkSection';
 import type { StorymarkRendererProps } from '../types';
+import type { ParseError, StorySection } from '@storymark/core';
 
 export function StorymarkRenderer({
   content,
@@ -17,7 +17,7 @@ export function StorymarkRenderer({
         <div className="storymark-errors">
           <h3>Story Parsing Errors:</h3>
           <ul>
-            {story.errors.map((error, index) => (
+            {story.errors.map((error: ParseError, index: number) => (
               <li key={index} className={`error-${error.type}`}>
                 {error.message}
               </li>
@@ -38,7 +38,7 @@ export function StorymarkRenderer({
       </header>
 
       <main className="storymark-content">
-        {story.sections.map((section, index) => (
+        {story.sections.map((section: StorySection, index: number) => (
           <StorymarkSection
             key={index}
             section={section}

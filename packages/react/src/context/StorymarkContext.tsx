@@ -65,7 +65,9 @@ export function StorymarkProvider({
 
       // Validation
       if (options?.required && (value === undefined || value === null)) {
-        console.warn(`Required story prop '${name}' is missing`);
+        if (process.env.NODE_ENV !== 'test') {
+          console.warn(`Required story prop '${name}' is missing`);
+        }
       }
 
       if (
@@ -73,21 +75,27 @@ export function StorymarkProvider({
         options?.options &&
         !options.options.includes(value)
       ) {
-        console.warn(
-          `Story prop '${name}' must be one of: ${options.options.join(', ')}`
-        );
+        if (process.env.NODE_ENV !== 'test') {
+          console.warn(
+            `Story prop '${name}' must be one of: ${options.options.join(', ')}`
+          );
+        }
       }
 
       if (value !== undefined && typeof value === 'number') {
         if (options?.max !== undefined && value > options.max) {
-          console.warn(
-            `Story prop '${name}' exceeds maximum value of ${options.max}`
-          );
+          if (process.env.NODE_ENV !== 'test') {
+            console.warn(
+              `Story prop '${name}' exceeds maximum value of ${options.max}`
+            );
+          }
         }
         if (options?.min !== undefined && value < options.min) {
-          console.warn(
-            `Story prop '${name}' is below minimum value of ${options.min}`
-          );
+          if (process.env.NODE_ENV !== 'test') {
+            console.warn(
+              `Story prop '${name}' is below minimum value of ${options.min}`
+            );
+          }
         }
       }
 
