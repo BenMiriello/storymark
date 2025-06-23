@@ -3,13 +3,12 @@
   "compilerOptions": {
     "jsx": "react-jsx",
     "outDir": "./dist",
-    "rootDir": "./src",
     "baseUrl": ".",
     "paths": {
       "@storymark/core": ["../core/src/index.ts"]
     },
     "types": ["jest", "@testing-library/jest-dom", "node"]
   },
-  "include": ["src/**/*"],
+  "include": ["src/**/*", "../core/src/**/*"],
   "exclude": ["dist", "node_modules"]
 }
