@@ -1,6 +1,6 @@
 {
   "name": "@storymark/react",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "React components for Storymark stories",
   "main": "dist/index.js",
   "module": "dist/index.esm.js",
@@ -28,7 +28,7 @@
     "react-dom": ">=18.0.0"
   },
   "dependencies": {
-    "@storymark/core": "1.0.0"
+    "@storymark/core": "1.0.1"
   },
   "devDependencies": {
     "@mdx-js/react": "^3.0.0",
