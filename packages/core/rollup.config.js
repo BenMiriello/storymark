@@ -6,15 +6,15 @@ const { dts } = require('rollup-plugin-dts');
 module.exports = [
   // Main build
   {
-    input: 'src/index.ts',
+    input: 'packages/core/src/index.ts',
     output: [
       {
-        file: 'dist/index.js',
+        file: 'packages/core/dist/index.js',
         format: 'cjs',
         sourcemap: true,
       },
       {
-        file: 'dist/index.esm.js',
+        file: 'packages/core/dist/index.esm.js',
         format: 'esm',
         sourcemap: true,
       },
@@ -23,7 +23,7 @@ module.exports = [
       resolve(),
       commonjs(),
       typescript({
-        tsconfig: './tsconfig.json',
+        tsconfig: 'packages/core/tsconfig.json',
         declaration: false,
       }),
     ],
@@ -31,9 +31,9 @@ module.exports = [
   },
   // Type definitions
   {
-    input: 'src/index.ts',
+    input: 'packages/core/src/index.ts',
     output: {
-      file: 'dist/index.d.ts',
+      file: 'packages/core/dist/index.d.ts',
       format: 'esm',
     },
     plugins: [dts()],
