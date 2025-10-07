@@ -5,12 +5,12 @@ import {
   getRegisteredTemplates,
   reactTemplateRegistry,
 } from '../registry/templateRegistry';
-import { useStory, useStoryProp } from '../context/StorymarkContext';
+import { useStoryTemplate, useStoryProp } from '../context/StoryContext';
 import { templateRegistry as coreRegistry } from '@storymark/core';
 
 // Test components
-function ComicPanel4() {
-  const { sections } = useStory();
+function ComicPanel() {
+  const { sections } = useStoryTemplate();
   const columns = useStoryProp('columns', { default: 4, max: 6 });
   const spacing = useStoryProp('spacing', {
     default: 'md',
@@ -27,7 +27,7 @@ function ComicPanel4() {
 }
 
 function PhotoEssay() {
-  const { sections } = useStory();
+  const { sections } = useStoryTemplate();
   const layout = useStoryProp('layout', { default: 'grid' });
 
   return (
@@ -54,20 +54,20 @@ describe('React Template Registry', () => {
 
   describe('registerTemplate function', () => {
     test('should register functional component with auto-generated name', () => {
-      registerTemplate(ComicPanel4);
+      registerTemplate(ComicPanel);
 
-      const component = getTemplateComponent('comic_panel_4');
-      expect(component).toBe(ComicPanel4);
+      const component = getTemplateComponent('comic_panel');
+      expect(component).toBe(ComicPanel);
 
       const registeredNames = getRegisteredTemplates();
-      expect(registeredNames).toContain('comic_panel_4');
+      expect(registeredNames).toContain('comic_panel');
     });
 
     test('should register component with custom name', () => {
-      registerTemplate(ComicPanel4, 'custom_comic_template');
+      registerTemplate(ComicPanel, 'custom_comic_template');
 
       const component = getTemplateComponent('custom_comic_template');
-      expect(component).toBe(ComicPanel4);
+      expect(component).toBe(ComicPanel);
 
       const registeredNames = getRegisteredTemplates();
       expect(registeredNames).toContain('custom_comic_template');
@@ -114,13 +114,14 @@ describe('React Template Registry', () => {
 
   describe('getTemplateComponent function', () => {
     beforeEach(() => {
-      registerTemplate(ComicPanel4);
+      registerTemplate(ComicPanel);
       registerTemplate(PhotoEssay);
     });
 
     test('should return registered component', () => {
-      const component = getTemplateComponent('comic_panel_4');
-      expect(component).toBe(ComicPanel4);
+      registerTemplate(ComicPanel);
+      const component = getTemplateComponent('comic_panel');
+      expect(component).toBe(ComicPanel);
     });
 
     test('should return undefined for unknown template', () => {
@@ -137,14 +138,14 @@ describe('React Template Registry', () => {
 
     test('should return all registered template names sorted', () => {
       registerTemplate(PhotoEssay);
-      registerTemplate(ComicPanel4);
+      registerTemplate(ComicPanel);
 
       const templates = getRegisteredTemplates();
-      expect(templates).toEqual(['comic_panel_4', 'photo_essay']);
+      expect(templates).toEqual(['comic_panel', 'photo_essay']);
     });
 
     test('should include custom named templates', () => {
-      registerTemplate(ComicPanel4, 'custom_name');
+      registerTemplate(ComicPanel, 'custom_name');
       registerTemplate(PhotoEssay);
 
       const templates = getRegisteredTemplates();
@@ -154,19 +155,19 @@ describe('React Template Registry', () => {
 
   describe('registry integration', () => {
     test('should register both component and schema', () => {
-      registerTemplate(ComicPanel4);
+      registerTemplate(ComicPanel);
 
       // Check React registry
-      expect(getTemplateComponent('comic_panel_4')).toBe(ComicPanel4);
+      expect(getTemplateComponent('comic_panel')).toBe(ComicPanel);
 
       // Check core registry
-      const schema = coreRegistry.getSchema('comic_panel_4');
+      const schema = coreRegistry.getSchema('comic_panel');
       expect(schema).toBeDefined();
-      expect(schema?.name).toBe('comic_panel_4');
+      expect(schema?.name).toBe('comic_panel');
     });
 
     test('should clear both registries', () => {
-      registerTemplate(ComicPanel4);
+      registerTemplate(ComicPanel);
       registerTemplate(PhotoEssay);
 
       expect(getRegisteredTemplates()).toHaveLength(2);
@@ -181,14 +182,14 @@ describe('React Template Registry', () => {
 
   describe('component analysis', () => {
     test('should create basic schema for components', () => {
-      registerTemplate(ComicPanel4);
+      registerTemplate(ComicPanel);
 
-      const schema = coreRegistry.getSchema('comic_panel_4');
+      const schema = coreRegistry.getSchema('comic_panel');
       expect(schema).toMatchObject({
-        name: 'comic_panel_4',
+        name: 'comic_panel',
         usesStoryContent: true,
         category: 'react',
-        description: 'React template component: ComicPanel4',
+        description: 'React template component: ComicPanel',
       });
     });
 
@@ -208,16 +209,16 @@ describe('React Template Registry', () => {
   describe('error handling', () => {
     test('should handle registration without errors', () => {
       expect(() => {
-        registerTemplate(ComicPanel4);
+        registerTemplate(ComicPanel);
       }).not.toThrow();
     });
 
     test('should handle multiple registrations of same component', () => {
-      registerTemplate(ComicPanel4);
-      registerTemplate(ComicPanel4, 'alternate_name');
+      registerTemplate(ComicPanel);
+      registerTemplate(ComicPanel, 'alternate_name');
 
-      expect(getTemplateComponent('comic_panel_4')).toBe(ComicPanel4);
-      expect(getTemplateComponent('alternate_name')).toBe(ComicPanel4);
+      expect(getTemplateComponent('comic_panel')).toBe(ComicPanel);
+      expect(getTemplateComponent('alternate_name')).toBe(ComicPanel);
     });
   });
 });

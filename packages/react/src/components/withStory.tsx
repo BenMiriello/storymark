@@ -1,9 +1,9 @@
 import { ComponentType } from 'react';
 import {
-  useStory,
-  useStorymarkContext,
+  useStoryTemplate,
+  useStoryContext,
   StoryPropOptions,
-} from '../context/StorymarkContext';
+} from '../context/StoryContext';
 import type { StorySection, StoryMetadata } from '@storymark/core';
 
 export interface WithStoryProps {
@@ -16,8 +16,8 @@ export function withStory<P extends object>(
   WrappedComponent: ComponentType<P & WithStoryProps>
 ): ComponentType<P> {
   const WithStoryComponent = (props: P) => {
-    const { sections, metadata } = useStory();
-    const { storyProp } = useStorymarkContext();
+    const { sections, metadata } = useStoryTemplate();
+    const { storyProp } = useStoryContext();
 
     return (
       <WrappedComponent

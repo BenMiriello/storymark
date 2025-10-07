@@ -1,19 +1,19 @@
 // Components
-export { StorymarkRenderer } from './components/StorymarkRenderer';
-export { StorymarkSection } from './components/StorymarkSection';
+export { StoryRenderer } from './components/StoryRenderer';
+export { StorySection } from './components/StorySection';
 export { withStory } from './components/withStory';
 
 // Template Components (examples)
-export { ComicPanel4 } from './components/templates/ComicPanel4';
+export { ComicPanel } from './components/templates/ComicPanel';
 export { PhotoEssay } from './components/templates/PhotoEssay';
 
 // Context and Hooks
 export {
-  StorymarkProvider,
-  useStory,
+  StoryProvider,
+  useStoryTemplate,
   useStoryProp,
-  useStorymarkContext,
-} from './context/StorymarkContext';
+  useStoryContext,
+} from './context/StoryContext';
 
 // Template Registration
 export {
@@ -22,15 +22,27 @@ export {
   getRegisteredTemplates,
 } from './registry/templateRegistry';
 
-// Legacy Hook (for backward compatibility)
-export { useStorymark } from './hooks/useStorymark';
+// Hooks
+export { useStory } from './hooks/useStory';
+export { useStoryNavigation } from './hooks/useStoryNavigation';
+export type {
+  UseStoryNavigationResult,
+  UseStoryNavigationOptions,
+  StoryNavigationState,
+  StoryNavigationActions,
+} from './hooks/useStoryNavigation';
+export { useStoryEditor } from './hooks/useStoryEditor';
+export type {
+  UseStoryEditorOptions,
+  UseStoryEditorResult,
+} from './hooks/useStoryEditor';
 
 // Types
 export type {
-  StorymarkRendererProps,
-  StorymarkSectionProps,
-  StorymarkProviderProps,
-  StorymarkContextValue,
+  StoryRendererProps,
+  StorySectionProps,
+  StoryProviderProps,
+  StoryContextValue,
   StoryPropOptions,
   WithStoryProps,
 } from './types';

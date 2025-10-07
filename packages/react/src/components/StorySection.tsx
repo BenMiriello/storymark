@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 import type { StoryDirective } from '@storymark/core';
 import type { StorySectionProps } from '../types';
 
-export function StorymarkSection({
+export function StorySection({
   section,
   index,
   className = '',
@@ -13,7 +13,7 @@ export function StorymarkSection({
     const cssClasses: string[] = [];
     const imageDirectives: StoryDirective[] = [];
 
-    section.directives.forEach((directive: StoryDirective) => {
+    section.directives.forEach(directive => {
       switch (directive.type) {
         case 'justify':
           styles.textAlign = directive.value as
@@ -49,7 +49,7 @@ export function StorymarkSection({
   }, [section.directives]);
 
   const sectionClasses = [
-    'storymark-section',
+    'story-section',
     `section-${index}`,
     ...processedDirectives.cssClasses,
     className,
@@ -66,20 +66,41 @@ export function StorymarkSection({
       )}
 
       {processedDirectives.imageDirectives.map((imageDirective, imgIndex) => (
-        <div key={imgIndex} className="section-image">
+        <div
+          key={imgIndex}
+          className="section-image"
+          style={{ marginBottom: '1rem' }}
+        >
           <img
             src={imageDirective.value}
             alt={imageDirective.params?.[0] || ''}
-            className="storymark-image"
+            className="story-image"
+            style={{
+              maxWidth: '100%',
+              height: 'auto',
+              display: 'block',
+              borderRadius: '6px',
+              boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)',
+            }}
           />
           {imageDirective.params?.[0] && (
-            <figcaption className="image-caption">
+            <figcaption
+              className="image-caption"
+              style={{
+                marginTop: '0.5rem',
+                fontSize: '0.875rem',
+                color: '#9ca3af',
+                textAlign: 'center',
+                fontStyle: 'italic',
+              }}
+            >
               {imageDirective.params[0]}
             </figcaption>
           )}
         </div>
       ))}
 
+      {/* Debug directives hidden as requested
       {section.directives.length > 0 && (
         <details
           className="section-debug"
@@ -89,6 +110,7 @@ export function StorymarkSection({
           <pre>{JSON.stringify(section.directives, null, 2)}</pre>
         </details>
       )}
+      */}
     </section>
   );
 }

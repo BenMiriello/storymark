@@ -1,0 +1,43 @@
+import typescript from '@rollup/plugin-typescript';
+import resolve from '@rollup/plugin-node-resolve';
+import commonjs from '@rollup/plugin-commonjs';
+import { dts } from 'rollup-plugin-dts';
+import mdx from '@mdx-js/rollup';
+
+export default [
+  // Main build
+  {
+    input: 'src/index.ts',
+    output: [
+      {
+        file: 'dist/index.js',
+        format: 'cjs',
+        sourcemap: true
+      },
+      {
+        file: 'dist/index.esm.js',
+        format: 'esm',
+        sourcemap: true
+      }
+    ],
+    plugins: [
+      resolve(),
+      commonjs(),
+      mdx(),
+      typescript({
+        tsconfig: './tsconfig.json',
+        declaration: false
+      })
+    ],
+    external: ['react', 'react-dom', '@storymark/core']
+  },
+  // Type definitions
+  {
+    input: 'src/index.ts',
+    output: {
+      file: 'dist/index.d.ts',
+      format: 'esm'
+    },
+    plugins: [dts()]
+  }
+];

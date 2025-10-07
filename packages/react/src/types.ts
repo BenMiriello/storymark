@@ -6,25 +6,25 @@ import type {
 } from '@storymark/core';
 import type { ReactNode } from 'react';
 
-export interface StorymarkRendererProps {
+export interface StoryRendererProps {
   content: string;
   className?: string;
 }
 
-export interface StorymarkSectionProps {
+export interface StorySectionProps {
   section: StorySection;
   index: number;
   className?: string;
 }
 
 // New Context and Provider types
-export interface StorymarkProviderProps {
+export interface StoryProviderProps {
   story: ParsedStory;
   children: ReactNode;
   templateProps?: Record<string, any>;
 }
 
-export interface StorymarkContextValue {
+export interface StoryContextValue {
   story: ParsedStory;
   sections: StorySection[];
   metadata: StoryMetadata;

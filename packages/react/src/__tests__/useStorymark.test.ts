@@ -1,7 +1,7 @@
 import { renderHook } from '@testing-library/react';
-import { useStorymark } from '../hooks/useStorymark';
+import { useStory } from '../hooks/useStory';
 
-describe('useStorymark Hook', () => {
+describe('useStory Hook', () => {
   test('should parse story content and return structured data', () => {
     const content = `id: test_story
 title: Test Story
@@ -19,7 +19,7 @@ Another section here.
 
 @fade: slow`;
 
-    const { result } = renderHook(() => useStorymark(content));
+    const { result } = renderHook(() => useStory(content));
 
     expect(result.current.metadata.id).toBe('test_story');
     expect(result.current.metadata.title).toBe('Test Story');
@@ -29,7 +29,7 @@ Another section here.
   test('should handle parsing errors gracefully', () => {
     const invalidContent = `invalid content without frontmatter`;
 
-    const { result } = renderHook(() => useStorymark(invalidContent));
+    const { result } = renderHook(() => useStory(invalidContent));
 
     expect(result.current.errors.length).toBeGreaterThan(0);
     expect(result.current.sections).toHaveLength(0);
@@ -41,7 +41,7 @@ title: Test
 ---
 Content here.`;
 
-    const { result, rerender } = renderHook(() => useStorymark(content));
+    const { result, rerender } = renderHook(() => useStory(content));
     const firstResult = result.current;
 
     rerender();
@@ -57,7 +57,7 @@ title: Test 1
 Content 1.`;
 
     const { result, rerender } = renderHook(
-      ({ content }) => useStorymark(content),
+      ({ content }) => useStory(content),
       { initialProps: { content } }
     );
 

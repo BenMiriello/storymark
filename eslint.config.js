@@ -19,13 +19,18 @@ module.exports = [
         },
       },
       globals: {
-        // Node.js globals
+        console: 'readonly',
+        React: 'readonly',
+
+        // Node.js
         process: 'readonly',
         __dirname: 'readonly',
         __filename: 'readonly',
         global: 'readonly',
         Buffer: 'readonly',
-        // Jest globals
+
+        // Jest
+        jest: 'readonly',
         describe: 'readonly',
         test: 'readonly',
         it: 'readonly',
@@ -34,18 +39,13 @@ module.exports = [
         afterEach: 'readonly',
         beforeAll: 'readonly',
         afterAll: 'readonly',
-        jest: 'readonly',
-        // React globals for React components
-        React: 'readonly',
-        // Console for logging and testing
-        console: 'readonly',
       },
     },
     plugins: {
       '@typescript-eslint': typescript,
-      react: react,
+      react,
       'react-hooks': reactHooks,
-      prettier: prettier,
+      prettier,
     },
     settings: {
       react: {
@@ -63,12 +63,12 @@ module.exports = [
       '@typescript-eslint/explicit-module-boundary-types': 'off',
       'react/react-in-jsx-scope': 'off',
       'react/prop-types': 'off',
+      'eol-last': ['error', 'always'],
     },
   },
   {
     files: ['packages/core/**/*.{ts,tsx}'],
     rules: {
-      'react/react-in-jsx-scope': 'off',
       'react-hooks/rules-of-hooks': 'off',
       'react-hooks/exhaustive-deps': 'off',
     },
